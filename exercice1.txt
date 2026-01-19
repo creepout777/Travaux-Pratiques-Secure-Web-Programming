@@ -1,0 +1,69 @@
+#CREATION
+
+create database RestaurantDB;
+use RestaurantDB;
+create table Client(
+	idClient INT PRIMARY KEY AUTO_INCREMENT,
+    nom varchar(50),
+    telephone varchar(20)
+);
+create table TableRestaurant(
+	idTable INT PRIMARY KEY AUTO_INCREMENT,
+    numero INT,
+    capacite INT
+);
+create table Reservation(
+	idReservation INT PRIMARY KEY AUTO_INCREMENT,
+    idClient INT,
+    idTable INT,
+    dateReservation DATE,
+    heure TIME,
+    nombrePersonnes INT,
+    
+  	  CONSTRAINT fk_client_reservation FOREIGN KEY (idClient) REFERENCES Client(idClient),
+    CONSTRAINT fk_table_reservation FOREIGN KEY (idTable) REFERENCES TableRestaurant(idTable)
+);
+
+
+insert into Client(nom, telephone) values('Hassan','+212 456789012');
+insert into Client(nom, telephone) values('Houssain','+212 098987623');
+insert into Client(nom, telephone) values('Hessna','+212 273903479');
+
+insert into TableRestaurant(numero, capacite)values(11, 2);
+insert into TableRestaurant(numero, capacite)values(22, 5);
+insert into TableRestaurant(numero, capacite)values(43, 2);
+
+insert into Reservation(idTable, idClient, dateReservation, heure, nombrePersonnes)
+values (1, 1, '2025-01-10', '19:00', 2);
+insert into Reservation(idTable, idClient, dateReservation, heure, nombrePersonnes)
+values (2, 2, '2025-01-11', '20:30', 4);
+insert into Reservation(idTable, idClient, dateReservation, heure, nombrePersonnes)
+values (3, 3, '2025-01-12', '18:45', 2);
+insert into Reservation(idTable, idClient, dateReservation, heure, nombrePersonnes)
+values (1, 2, '2025-01-13', '21:00', 2);
+insert into Reservation(idTable, idClient, dateReservation, heure, nombrePersonnes)
+values (2, 1, '2025-01-14', '19:30', 5);
+
+#REQUETTES SIMPLES
+
+SELECT * FROM Client;
+SELECT * FROM Reservation;
+SELECT * FROM TableRestaurant;
+
+#REQUETTES AVEC DES CONDITIONS
+
+SELECT * FROM Reservation r INNER JOIN Client c ON c.idClient = r.idClient WHERE c.nom = 'Sara';
+SELECT * FROM TableRestaurant where capacite >= 4;
+
+#REQUETTES AVEC JOINTURES
+
+SELECT c.nom, t.numero, r.dateReservation, r.heure from Reservation r
+INNER JOIN Client c 
+ON r.idClient = c.idClient
+INNER JOIN TableRestaurant t
+ON t.idTable = r.idTable;
+
+SELECT *  FROM Reservation ORDER BY dateReservation;
+SELECT *  FROM Reservation ORDER BY heure;
+
+
